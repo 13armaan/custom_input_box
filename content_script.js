@@ -1,7 +1,8 @@
 // Put all the javascript code here, that you want to execute after page load.
+console.log("contentscript is running");
 const floating_input=document.createElement("textarea");
 floating_input.placeholder="Type here...";
-floating_input.id="smart-inpu-box";
+floating_input.id="smart-input-box";
 document.body.appendChild(floating_input);
 
 floating_input.addEventListener("input",()=>{

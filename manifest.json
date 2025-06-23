@@ -6,15 +6,18 @@
   "icons": {
     "64": "icons/icon.png"
   },
+  "permissions":[
+    "activeTab","scripting", "storage","tabs"
+  ],
   "background": {
-    "scripts": [
-      "background_script.js"
-    ]
+    
+      "service_worker":"background_script.js"
+    
   },
   "content_scripts": [
     {
       "matches": [
-        "*://*.mozilla.org/*"
+        "<all_urls>"
       ],
       "js": [
         "content_script.js"
@@ -24,18 +27,12 @@
       ]
     }
   ],
-  "browser_action": {
+  "action": {
     "default_icon": {
       "64": "icons/icon.png"
     },
-    "default_popup": "browserAction/index.html",
-    "default_title": "Custom Input Box"
-  },
-  "page_action": {
-    "default_icon": {
-      "64": "icons/icon.png"
-    },
-    "default_popup": "pageAction/index.html",
+    "default_popup": "popup.html",
     "default_title": "Custom Input Box"
   }
+  
 }
