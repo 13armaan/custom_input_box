@@ -9,4 +9,7 @@ floating_input.addEventListener("input",()=>{
     if(page_input){
         page_input.value=floating_input.value;
     }
+    else{
+        console.warn("No input field found on the page");
+    }
 });
