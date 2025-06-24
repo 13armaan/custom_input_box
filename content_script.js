@@ -1,9 +1,9 @@
 // Put all the javascript code here, that you want to execute after page load.
 console.log("contentscript is running");
-chrome.storage.sync.get("mode",({mode})=>{
-    console.log("mode is",mode);
-    if(mode==="habit"){
-      
+chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
+    if(request.setMode==="habit"){
+//normal habit mode
+console.log("mode is habit");
         const floating_input=document.createElement("textarea");
         floating_input.placeholder="Type here...";
         floating_input.id="smart-input-box";
@@ -19,7 +19,12 @@ chrome.storage.sync.get("mode",({mode})=>{
             }
         });
     }
-    else if(mode==="advanced"){
-
+    else if(request.setMode==="advanced"){
+        console.log("mode is advanced");
+        const existingblock=document.getElementById("smart-input-box");
+        if(existingblock){
+            existingblock.remove();
+            console.log("block removed as mode changed");
+        }
     }
 });
