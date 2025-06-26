@@ -41,6 +41,7 @@ document.addEventListener("click", function (event){
     document.body.appendChild(floating_input);
     floating_input.focus();
     console.log("text box added");
+    floating_input.value=clickede.value;
     floating_input.addEventListener("input",()=>{
          
         if(page_input){

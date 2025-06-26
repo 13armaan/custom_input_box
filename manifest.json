@@ -7,12 +7,26 @@
     "64": "icons/icon.png"
   },
   "permissions":[
-    "activeTab","scripting", "storage","tabs"
+    "activeTab","scripting", "storage","tabs","commands"
   ],
   "background": {
     
       "service_worker":"background_script.js"
     
+  },
+  "commands":{
+    "set-habit-mode":{
+      "suggested_key":{
+        "default": "Ctrl+Shift+H"
+      },
+      "description":"Set the mode to habit"
+    },
+    "set-advanced-mode":{
+      "suggested_key":{
+        "default":"Ctrl+Shift+D"
+      },
+      "description":"Set the mode to advanced"
+    }
   },
   "content_scripts": [
     {
