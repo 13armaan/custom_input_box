@@ -11,18 +11,50 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 //normal habit mode
         console.log("mode changed to habit");
         const box=document.getElementById("adv-input-box");
-        if(box) box.remove();
+           if(box) {box.remove();
+         console.log("box removed in habit mode ");}
+        const buttons=document.querySelector('.my-container');
+        if(buttons) buttons.remove();
+        console.log("buttons removed");
+        const self_box=document.getElementById("smart-input-box");
+        if(self_box) {self_box.remove();
+            console.log("selfbox removed");}
+
     }
     else if(currentMode==="advanced"){
         console.log("mode changed to advanced");
-        const input_box=document.getElementById("smart-input-box");
+        const input_box=document.getElementById("smart-input-box" );
     if(input_box) {input_box.remove();
         console.log("text box removed on advanced mode");}
+        const buttons=document.querySelector('.my-container');
+        if(buttons) {buttons.remove();
+        console.log("buttons removed");}
+        const self_box=document.getElementById("adv-input-box");
+        if(self_box) {self_box.remove();
+            console.log("selfbox removed");}
         const adv_input=document.createElement("textarea");
-        adv_input.placeholder="Type here...";
+        adv_input.placeholder="Type here in advanced  mode...";
         adv_input.id="adv-input-box";
         document.body.appendChild(adv_input);
-        console.log("text box added");
+        console.log("text box added in advanced  mode");
+        const targetElement=document.getElementById("adv-input-box");
+        const rect=targetElement.getBoundingClientRect();
+        const container =document.createElement("div");
+        container.className='my-container';
+        
+        const copy_button=document.createElement("button");
+        copy_button.textContent="copy_text";
+        copy_button.id="copy";
+        const send_text=document.createElement("button");
+        send_text.textContent="send_text";
+        const summ=document.createElement("button");
+        summ.textContent="Summarize";
+        
+       container.appendChild(copy_button);
+        container.appendChild(send_text);
+        container.appendChild(summ);
+        document.body.appendChild(container);
+        console.log("buttons added in adv mode");
     }
     });
 
@@ -59,7 +91,22 @@ document.addEventListener("click", function (event){
         }
     });
         }
-       
+       else if(currentMode==="advanced"){
+            if(clickede.id==="copy"){
+                console.log("copy button selected");
+             const textbox=document.getElementById("adv-input-box");
+             textbox.select();
+             textbox.setSelectionRange(0,9999)
+             try{
+                 const success=document.execCommand("copy");
+                 if(success) console.log("text copied");
+                 else console.log("text could not be copied");
+                }
+                catch(err){
+                    console.error("error:",err);
+                }
+            }
+        }
     
     
 });
