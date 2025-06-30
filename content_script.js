@@ -36,6 +36,7 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
         adv_input.placeholder="Type here in advanced  mode...";
         adv_input.id="adv-input-box";
         document.body.appendChild(adv_input);
+        adv_input.focus();
         console.log("text box added in advanced  mode");
         const targetElement=document.getElementById("adv-input-box");
         const rect=targetElement.getBoundingClientRect();
@@ -47,6 +48,7 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
         copy_button.id="copy";
         const send_text=document.createElement("button");
         send_text.textContent="send_text";
+        send_text.id="send";
         const summ=document.createElement("button");
         summ.textContent="Summarize";
         
@@ -58,8 +60,9 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
     }
     });
 
- 
+    let preve=null;
 document.addEventListener("click", function (event){
+   
     const clickede=event.target;
     const istext=clickede.tagName==="INPUT"||clickede.tagName==="TEXTAREA";
     const input_box=document.getElementById("smart-input-box");
@@ -72,7 +75,7 @@ document.addEventListener("click", function (event){
     else if(istext && currentMode==="habit"){
         if(input_box) input_box.remove();
        
-          page_input=clickede;
+          preve=clickede;
             console.log("mode is habit");
     const floating_input=document.createElement("textarea");
     floating_input.placeholder="Type here...";
@@ -83,8 +86,8 @@ document.addEventListener("click", function (event){
     floating_input.value=clickede.value;
     floating_input.addEventListener("input",()=>{
          
-        if(page_input){
-            page_input.value=floating_input.value;
+        if(preve){
+            preve.value=floating_input.value;
         }
         else{
             console.warn("No input field found on the page");
@@ -92,9 +95,11 @@ document.addEventListener("click", function (event){
     });
         }
        else if(currentMode==="advanced"){
+        preve=clickede;
+        const textbox=document.getElementById("adv-input-box");
             if(clickede.id==="copy"){
                 console.log("copy button selected");
-             const textbox=document.getElementById("adv-input-box");
+             
              textbox.select();
              textbox.setSelectionRange(0,9999)
              try{
@@ -106,7 +111,14 @@ document.addEventListener("click", function (event){
                     console.error("error:",err);
                 }
             }
+            else if(clickede.id==="send"){
+                console.log("send button selected");
+                const previstext=preve && (preve.tagName==="INPUT"||preve.tagName==="TEXTAREA");
+                if(previstext){
+                preve.value=textbox.value;
+                console.log("value sent");
+                }
+            }
         }
-    
-    
+   
 });
