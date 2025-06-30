@@ -150,28 +150,31 @@ document.addEventListener("click", function (event){
                 const texttoai=textbox.value;
                 if(!texttoai.trim()) console.warn("no text to send");
                 const aidiv=document.createElement("textarea");
-                aidiv.placeholder="PLease enter your prompt";
+                aidiv.placeholder="PLease enter your prompt and press enter";
                 aidiv.id="ait";
                 document.body.appendChild(aidiv);
-                const prompt=aidiv.value;
-                fetch("https://api.openai.com/v1/chat/completions",{
+                let prompt=null;
+                document.addEventListener("keydown",function (e){
+                    if(e.key==="Enter"){
+                         prompt=aidiv.value;
+                        aidiv.value="please wait while we process your request";
+                    }
+                });
+               if(prompt){
+                fetch("https://api-inference.huggingface.co/models/gpt2",{
                     method:"POST",
                     headers:{
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer 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"
+                        "Authorization": "Bearer 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"
                     },
                     body: JSON.stringify({
-                        model:"gpt-3.5-turbo",
-                        messages:[
-                            {role:"system",content:"u are a good text related model."},
-                            {role:"user",content:"please perform "+prompt+"\n on"+texttoai}
-                        ]
+                        inputs:"please"+ prompt+"/n"+texttoai,
                     })
                 })
                 .then(response => response.json())
                 .then(data =>{
                     console.log("ai response",data);
-                    const response=data.choices?.[0]?.message?.content;
+                    const response=data[0]?.generated_text;
                     if(response){
                         aidiv.value=response.trim();
                     }
@@ -180,12 +183,10 @@ document.addEventListener("click", function (event){
                     }
 
                 })
-                .catch(err=>{
-                    console.error("error responding",err);
-                    aidiv.value="error could not get the response";
-                });
+                 
 
             }
+        }
         }
    
 });
