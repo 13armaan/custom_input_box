@@ -10,12 +10,19 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
     if(currentMode==="habit"){
 //normal habit mode
         console.log("mode changed to habit");
+        const box=document.getElementById("adv-input-box");
+        if(box) box.remove();
     }
     else if(currentMode==="advanced"){
         console.log("mode changed to advanced");
         const input_box=document.getElementById("smart-input-box");
     if(input_box) {input_box.remove();
         console.log("text box removed on advanced mode");}
+        const adv_input=document.createElement("textarea");
+        adv_input.placeholder="Type here...";
+        adv_input.id="adv-input-box";
+        document.body.appendChild(adv_input);
+        console.log("text box added");
     }
     });
 
