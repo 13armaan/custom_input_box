@@ -66,6 +66,7 @@ document.addEventListener("click", function (event){
     const clickede=event.target;
     const istext=clickede.tagName==="INPUT"||clickede.tagName==="TEXTAREA";
     const input_box=document.getElementById("smart-input-box");
+    if(istext) preve=clickede;
     if(input_box && !input_box.contains(event.target) && !istext){
       
             input_box.remove();
@@ -75,7 +76,7 @@ document.addEventListener("click", function (event){
     else if(istext && currentMode==="habit"){
         if(input_box) input_box.remove();
        
-          preve=clickede;
+          
             console.log("mode is habit");
     const floating_input=document.createElement("textarea");
     floating_input.placeholder="Type here...";
@@ -95,7 +96,7 @@ document.addEventListener("click", function (event){
     });
         }
        else if(currentMode==="advanced"){
-        preve=clickede;
+        
         const textbox=document.getElementById("adv-input-box");
             if(clickede.id==="copy"){
                 console.log("copy button selected");
