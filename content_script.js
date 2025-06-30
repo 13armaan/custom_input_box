@@ -49,12 +49,14 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
         const send_text=document.createElement("button");
         send_text.textContent="send_text";
         send_text.id="send";
-        const summ=document.createElement("button");
-        summ.textContent="Summarize";
+        const ai=document.createElement("button");
+        ai.textContent="AI help";
+        ai.id="ai";
+
         
        container.appendChild(copy_button);
         container.appendChild(send_text);
-        container.appendChild(summ);
+        container.appendChild(ai);
         document.body.appendChild(container);
         console.log("buttons added in adv mode");
     }
@@ -119,6 +121,70 @@ document.addEventListener("click", function (event){
                 preve.value=textbox.value;
                 console.log("value sent");
                 }
+            }
+            else if(clickede.id==="ai"){
+                console.log("ai button selected");
+                // const opt=document.createElement("div");
+                // opt.className='optionsai';
+
+                // const summ=document.createElement("button");
+                // summ.textContent="summarize text";
+                // summ.id="summarize";
+
+                
+                // const rew=document.createElement("button");
+                // rew.textContent="rewrite text";
+                // rew.id="rewrite";
+
+
+                // const gram=document.createElement("button");
+                // gram.textContent="correct grammar";
+                // gram.id="grammar";
+
+                // opt.appendChild(summ);
+                // opt.appendChild(rew);
+                // opt.appendChild(gram);
+                // document.body.appendChild(opt);
+                // console.log("options given");
+
+                const texttoai=textbox.value;
+                if(!texttoai.trim()) console.warn("no text to send");
+                const aidiv=document.createElement("textarea");
+                aidiv.placeholder="PLease enter your prompt";
+                aidiv.id="ait";
+                document.body.appendChild(aidiv);
+                const prompt=aidiv.value;
+                fetch("https://api.openai.com/v1/chat/completions",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer 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"
+                    },
+                    body: JSON.stringify({
+                        model:"gpt-3.5-turbo",
+                        messages:[
+                            {role:"system",content:"u are a good text related model."},
+                            {role:"user",content:"please perform "+prompt+"\n on"+texttoai}
+                        ]
+                    })
+                })
+                .then(response => response.json())
+                .then(data =>{
+                    console.log("ai response",data);
+                    const response=data.choices?.[0]?.message?.content;
+                    if(response){
+                        aidiv.value=response.trim();
+                    }
+                    else{
+                        aidiv.value="error could not get the response";
+                    }
+
+                })
+                .catch(err=>{
+                    console.error("error responding",err);
+                    aidiv.value="error could not get the response";
+                });
+
             }
         }
    
